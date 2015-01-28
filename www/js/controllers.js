@@ -22,6 +22,47 @@ calaos.controller('MainAppCtrl', function ($scope, CalaosHome, $location) {
     });
 });
 
+
+calaos.controller('TotalListCtrl', function ($scope, CalaosHome, $location) {
+
+    console.log('controller TotalListCtrl');
+
+    //get the sorted homeByRow from the calaos service
+    //and inject that into the controller scope
+    CalaosHome.getRawHome().then(function (data) {
+
+var count = 0;
+for (var k in data) {
+    if (data.hasOwnProperty(k)) {
+        for (var l in data[k].items.outputs) {
+                if (data[k].items.outputs.hasOwnProperty(l)) {
+                        if ((data[k].items.outputs[l].gui_type=="light_dimmer") &&(data[k].items.outputs[l].state !=  0)) {
+                                ++count;
+                                data[k].compteur= count;
+                        }
+                }
+        }
+
+    }
+}
+$scope.homeRaw = data;
+    },
+    function() {
+        console.log("go to login page");
+        $location.path('/mobile/settings');
+    });
+
+    CalaosHome.getRawHome().then(function (data) {
+        $scope.homeRaw = data;
+    });
+
+});
+
+
+
+
+
+
 calaos.controller('RoomsListCtrl', function ($scope, CalaosHome, $location) {
 
     console.log('controller RoomsListCtrl');
@@ -37,7 +78,24 @@ calaos.controller('RoomsListCtrl', function ($scope, CalaosHome, $location) {
     });
 
     CalaosHome.getRawHome().then(function (data) {
-        $scope.homeRaw = data;
+var count = 0;
+for (var k in data) {
+    if (data.hasOwnProperty(k)) {
+        count=0;
+        for (var l in data[k].items.outputs) {
+                if (data[k].items.outputs.hasOwnProperty(l)) {
+                        if ((data[k].items.outputs[l].gui_type=="light_dimmer") &&(data[k].items.outputs[l].state !=  0)) {
+                                ++count;
+                                data[k].compteur= count;
+                        }
+                }
+        }
+
+    }
+}
+
+
+$scope.homeRaw = data;
     });
 
 });

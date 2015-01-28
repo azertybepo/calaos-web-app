@@ -23,6 +23,7 @@ calaos.config(['$routeProvider', function($routeProvider) {
       when('/desktop/audio/:player_id', {templateUrl: 'partials/desktop/audio_player.html',  controller: 'AudioPlayerCtrl'}).
       when('/desktop/cameras',  {templateUrl: 'partials/desktop/cameras.html',   controller: 'CamerasCtrl'}).
       when('/desktop/camera/:cam_id',  {templateUrl: 'partials/desktop/camerasingle.html',   controller: 'CameraSingleCtrl'}).
+      when('/desktop/on',  {templateUrl: 'partials/desktop/on.html',   controller: 'TotalListCtrl'}).
     otherwise({redirectTo: '/' + device + '/home'})
 }]);
 
