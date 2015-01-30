@@ -31,20 +31,6 @@ calaos.controller('TotalListCtrl', function ($scope, CalaosHome, $location) {
     //and inject that into the controller scope
     CalaosHome.getRawHome().then(function (data) {
 
-//var count = 0;
-//for (var k in data) {
-//    if (data.hasOwnProperty(k)) {
-//        for (var l in data[k].items.outputs) {
-//                if (data[k].items.outputs.hasOwnProperty(l)) {
-//                        if ((data[k].items.outputs[l].gui_type=="light_dimmer") &&(data[k].items.outputs[l].state !=  0)) {
-//                                ++count;
-//                                data[k].compteur= count;
-//                        }
-//                }
-//        }
-//
-//    }
-//}
 $scope.homeRaw = data;
     },
     function() {
@@ -294,13 +280,11 @@ calaos.controller('RoomCtrl', function ($scope, $routeParams, CalaosHome) {
 calaos.controller('LightCtrl', function ($scope, CalaosHome) {
 
     var updateState = function (item) {
-//alert(1);
         $scope.state = $scope._item.state == "true"?true:false;
         $scope.name = $scope._item.name;
     }
     $scope.init = function(it) {
         $scope._item = CalaosHome.getItemOutput(it.id);
-//	alert(2);
 	updateState(it);
         $scope.$watch("_item", function() {
             updateState($scope._item);
