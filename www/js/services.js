@@ -75,7 +75,7 @@ calaos.factory('CalaosHome', ['$http', '$q', '$timeout', function ($http, $q, $t
                                 if (calaosObj.home[i].items.outputs[io].id == outputCache[tokens[1]].id){
                                         if ((outputCache[tokens[1]].state!=0) && (calaosObj.home[i].items.outputs[io].gui_type=='light_dimmer')){
                                                 if (!(calaosObj.home[i].compteur)){
-						calaosObj.home[i].compteur=0;
+							calaosObj.home[i].compteur=0;
 						}
 						if (calaosObj.home[i].compteur>=0){
                                                         calaosObj.home[i].compteur=1*calaosObj.home[i].compteur+1;
@@ -193,6 +193,14 @@ calaos.factory('CalaosHome', ['$http', '$q', '$timeout', function ($http, $q, $t
                 if (calaosObj.home[i].items.outputs)
                 for (var io = 0;io < calaosObj.home[i].items.outputs.length;io++) {
                     outputCache[calaosObj.home[i].items.outputs[io].id] = calaosObj.home[i].items.outputs[io];
+		    if ((calaosObj.home[i].items.outputs[io].state>0)&&(calaosObj.home[i].items.outputs[io].gui_type=='light_dimmer')) {
+			if (calaosObj.home[i].compteur){
+				calaosObj.home[i].compteur=calaosObj.home[i].compteur+1;
+			}else{
+				calaosObj.home[i].compteur=1;
+			}
+		    }
+			
                 }
 
                 a.push(i);
