@@ -62,23 +62,6 @@ calaos.controller('RoomsListCtrl', function ($scope, CalaosHome, $location) {
     });
 
     CalaosHome.getRawHome().then(function (data) {
-var count = 0;
-for (var k in data) {
-    if (data.hasOwnProperty(k)) {
-        count=0;
-        for (var l in data[k].items.outputs) {
-                if (data[k].items.outputs.hasOwnProperty(l)) {
-                        if ((data[k].items.outputs[l].gui_type=="light_dimmer") &&(data[k].items.outputs[l].state !=  0)) {
-                                ++count;
-                                data[k].compteur= count;
-                        }
-                }
-        }
-
-    }
-}
-
-
 $scope.homeRaw = data;
     });
 

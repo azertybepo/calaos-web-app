@@ -74,8 +74,11 @@ calaos.factory('CalaosHome', ['$http', '$q', '$timeout', function ($http, $q, $t
                                 }
                                 if (calaosObj.home[i].items.outputs[io].id == outputCache[tokens[1]].id){
                                         if ((outputCache[tokens[1]].state!=0) && (calaosObj.home[i].items.outputs[io].gui_type=='light_dimmer')){
-                                                if (calaosObj.home[i].compteur>0){
-                                                        calaosObj.home[i].compteur=calaosObj.home[i].compteur+1;
+                                                if (!(calaosObj.home[i].compteur)){
+						calaosObj.home[i].compteur=0;
+						}
+						if (calaosObj.home[i].compteur>=0){
+                                                        calaosObj.home[i].compteur=1*calaosObj.home[i].compteur+1;
                                                 }
                                         }
                                 }
