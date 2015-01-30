@@ -57,10 +57,13 @@ calaos.factory('CalaosHome', ['$http', '$q', '$timeout', function ($http, $q, $t
                         console.debug('Event change not implemented!');
                 }
                 else if (tokens[0] == 'output' && outputCache.hasOwnProperty(tokens[1])) {
-                    if (tokchange[0] == 'state'){
+                    if (tokchange[0] == 'state')
                         outputCache[tokens[1]].state = tokchange[1];
-///count switched on outputs   	     
-		        for (var i = 0;i < calaosObj.home.length;i++){
+
+
+
+///count switched on outputs
+                        for (var i = 0;i < calaosObj.home.length;i++){
                                 for (var io = 0;io < calaosObj.home[i].items.outputs.length;io++) {
                                 if (calaosObj.home[i].items.outputs[io].id == outputCache[tokens[1]].id){
                                         if ((outputCache[tokens[1]].state==0) && (calaosObj.home[i].items.outputs[io].gui_type=='light_dimmer')){
@@ -78,33 +81,17 @@ calaos.factory('CalaosHome', ['$http', '$q', '$timeout', function ($http, $q, $t
                                 }
                                 }
                         }
-                    
-
-
-    
-                    
-
-
-
-
-
-
-
-
-
-
-
-		    }
+                    }
                     else if (tokchange[0] == 'name'){
                         outputCache[tokens[1]].name = tokchange[1];
                     }
-		    else
+                    else
                     {
-			    console.debug('Event change not implemented!');
-		    }
+                            console.debug('Event change not implemented!');
+                    }
                 }
             }
-        }
+        
         else {
             //TODO: implement other events here:
             //new_input, new_output
@@ -370,6 +357,38 @@ calaos.factory('CalaosHome', ['$http', '$q', '$timeout', function ($http, $q, $t
 
         return deferred.promise;
     };
+    
+    //return the camera by its id
+    factory.getCamera = function (cam_id) {
+        var deferred = $q.defer();
+        if (calaosObj) {
+            var cam = {};
+            for(var i = 0;i < calaosObj.cameras.length; i++) {
+                if (calaosObj.cameras[i].id == cam_id) {
+                    cam = calaosObj.cameras[i];
+                    break;
+                }
+            }
+            deferred.resolve(cam);
+        }
+        else {
+            doInitRequest(function () {
+                var cam = {};
+                for(var i = 0;i < calaosObj.cameras.length; i++) {
+                    if (calaosObj.cameras[i].id == cam_id) {
+                        cam = calaosObj.cameras[i];
+                        break;
+                    }
+                }
+                deferred.resolve(cam);
+            }, function () {
+                console.log("error in http request");
+                deferred.reject('error in request');
+            });
+        }
+
+        return deferred.promise;
+    }
 
     //returns the audioplayer by its name
     factory.getAudioPlayer = function (pid) {
@@ -411,8 +430,6 @@ calaos.factory('CalaosHome', ['$http', '$q', '$timeout', function ($http, $q, $t
             "action": "get_camera_pic",
             "camera_id": camid
         };
-
-        console.debug(query);
 
         $http.post(calaosConfig.host, query, {timeout: canceler.promise})
             .success(function(data) {
